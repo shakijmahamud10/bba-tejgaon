@@ -17,10 +17,16 @@ import Gallery from './pages/Gallery';
 import NotFound from './pages/NotFound';
 
 
-const App: React.FC = () => {
+const App: React.FC<{ basename?: string }> = ({ basename = '' }) => {
     // Helper to get page from URL
     const getPageFromUrl = () => {
-        const path = window.location.pathname.slice(1); // remove leading /
+        let path = window.location.pathname;
+        if (basename && path.startsWith(basename)) {
+            path = path.slice(basename.length);
+        }
+        // Remove leading slash if present
+        if (path.startsWith('/')) path = path.slice(1);
+
         if (path === '') return 'home';
         return path;
     };
@@ -47,7 +53,12 @@ const App: React.FC = () => {
     }, []);
 
     const handleNavigate = (page: string) => {
-        window.history.pushState({}, '', `/${page === 'home' ? '' : page}`);
+        const targetPath = page === 'home' ? '' : page;
+        // Ensure we don't end up with double slashes if basename ends with /
+        const base = basename.endsWith('/') ? basename.slice(0, -1) : basename;
+        const url = `${base}/${targetPath}`;
+
+        window.history.pushState({}, '', url);
         setCurrentPage(page);
         window.scrollTo(0, 0);
     };
