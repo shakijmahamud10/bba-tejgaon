@@ -2,7 +2,7 @@
   "name": "bba-tejgaon",
   "private": true,
   "version": "0.0.0",
-  "homepage": "/bba-tejgaon/",
+  "homepage": "https://shakijmahamud10.github.io/bba-tejgaon/",
   "type": "module",
   "scripts": {
     "dev": "vite",
